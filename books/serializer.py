@@ -29,6 +29,11 @@ class BorrowedRecordSerializer(serializers.ModelSerializer):
     class Meta: 
         model = BorrowedRecord
         fields = ['id', 'book', 'member', 'borrow_date', 'return_date']
+        read_only_fields = ['member']
+        
+    def create(self, validated_data):
+        validated_data['member'] = self.context['request'].user
+        return super().create(validated_data)
 
     
 

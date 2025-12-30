@@ -15,13 +15,35 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from debug_toolbar.toolbar import debug_toolbar_urls
 from api.views import api_root_view
+from rest_framework import permissions
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Library Management API",
+        default_version='v1',
+        description="The Library Management System API serves as a centralized backend solution designed to streamline the administration of physical and digital book collections. By leveraging a relational data model, the API facilitates seamless CRUD (Create, Read, Update, Delete) operations across five core entities: Books, Authors, Members, Categories, and Borrowing Records. Its primary function is to replace manual record-keeping with automated workflows, such as tracking real-time book availability and linking specific patrons to borrowing transactions through foreign key relationships. This structured approach ensures data integrity, allowing administrators to manage inventory and monitor circulation history through a set of standardized RESTful endpoints.",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@snippets.local"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', api_root_view), 
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
+    path('swagger/', schema_view.with_ui('swagger',cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api-auth/', include('rest_framework.urls')), 
-    path('api/', include('api.urls'), name='api-root'), 
+    path('api/', include('api.urls'), name='api-root'),
+    
 ] + debug_toolbar_urls()

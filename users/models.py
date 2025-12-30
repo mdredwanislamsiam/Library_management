@@ -1,6 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser 
+from django.contrib.auth.models import AbstractUser, Group
 from django.contrib.auth.base_user import BaseUserManager
+
+
 
 class CustomUserManager(BaseUserManager): 
     def create_user(self, email, password=None, **extra_fields): 
@@ -10,6 +12,8 @@ class CustomUserManager(BaseUserManager):
         user = self.model(email = email, **extra_fields)
         user.set_password(password)
         user.save(using = self._db)
+        group_name, _ = Group.objects.get_or_create(name='Member')
+        user.groups.add(group_name)
         return user
     
     def create_superuser(self, email, password = None, **extra_fields): 
