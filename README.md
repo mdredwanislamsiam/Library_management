@@ -30,17 +30,16 @@ A **Library Management System** built using **Django REST Framework (DRF)** that
 ## 📂 Project Structure (Overview)
 
 ```
-Library-Management/
+Library_Management/
 │
-├── books/
-├── authors/
-├── categories/
-├── members/
-├── borrowrecords/
-├── accounts/
-├── library_management/
+├── api/                  # Central API routing
+├── books/                # Book, author, category, borrow logic
+├── users/                # User & authentication logic
+├── Library_Management/   # Project settings & configuration
+├── staticfiles/
 ├── manage.py
 └── requirements.txt
+
 ```
 
 ---
@@ -185,8 +184,8 @@ You can explore and test all endpoints interactively.
 ###  Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/library-management.git
-cd library-management
+git clone https://github.com/mdredwanislamsiam/Library_management.git
+cd Library_management
 ```
 
 ###  Create Virtual Environment
